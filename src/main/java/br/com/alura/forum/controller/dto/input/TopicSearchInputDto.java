@@ -30,28 +30,26 @@ public class TopicSearchInputDto {
 		this.categoryName = categoryName;
 	}
 	public Specification<Topic> buildSpecification() {
-		Specification<Topic> specification = new Specification<Topic>() {
-			@Override
-			public Predicate toPredicate(Root<Topic> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+		
+		Specification<Topic> specification = (root, query, criteriaBuilder) -> {
 			List<Predicate> predicates = new ArrayList<>();
-				
-				if (status != null) {
-					Predicate predicateStatus = criteriaBuilder.equal(root.get("status"), status);
-					predicates.add(predicateStatus);
-				}
-				
-				if (categoryName != null) {
-					Predicate predicateCategoryName = 
-							criteriaBuilder.equal(
-									root.get("course").get("subcategory").get("category").get("name"), 
-									categoryName);
-					predicates.add(predicateCategoryName);
-				}
-				
-				Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
-				
-				return predicate;
+			
+			if (status != null) {
+				Predicate predicateStatus = criteriaBuilder.equal(root.get("status"), status);
+				predicates.add(predicateStatus);
 			}
+			
+			if (categoryName != null) {
+				Predicate predicateCategoryName = 
+						criteriaBuilder.equal(
+								root.get("course").get("subcategory").get("category").get("name"), 
+								categoryName);
+				predicates.add(predicateCategoryName);
+			}
+			
+			Predicate predicate = criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
+			
+			return predicate;
 		};
 		return specification;
 	}
