@@ -6,6 +6,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.model.topic.domain.TopicStatus;
 
@@ -37,6 +39,11 @@ public class TopicBriefOutputDto {
     			.map(TopicBriefOutputDto::new)
     			.collect(Collectors.toList());
     }
+    
+
+	public static Page<TopicBriefOutputDto> pageFromTopics(Page<Topic> topics) {
+		return topics.map(TopicBriefOutputDto::new);
+	}
     
 
     private long getSecondsSince(Instant lastUpdate) {
@@ -99,4 +106,5 @@ public class TopicBriefOutputDto {
 	public void setSolved(boolean solved) {
 		this.solved = solved;
 	}
+
 }
